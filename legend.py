@@ -11,7 +11,7 @@ import imageio
 
 import inkscape_move_files as imf
 
-LEGEND_DSTDIR = r'C:\Users\kroma\Documents\Differential\Boxes\testPrint'
+LEGEND_DSTDIR = r'..\something_actually_relevant' #output folder
 LEGEND_SRCDIR = r'default_templates\truffles'
 
 
@@ -76,6 +76,8 @@ if __name__ == '__main__':
                 ['orange_caramel', 'hazelnut_crunch','red_wine']] #,'chai_tea'],
                 #['orange_caramel','red_wine', 'chai_tea', 'cherry'],
                 #['orange_caramel', 'hazelnut_crunch', 'red_wine', 'espresso']]
+    if not os.path.exists(LEGEND_DSTDIR):
+        os.mkdir(LEGEND_DSTDIR)
     shutil.copy(os.path.join(LEGEND_SRCDIR, f'Back_Print.svg'),
                os.path.join(LEGEND_DSTDIR, f'Back_Print.svg'))
     bulk_legend(combos)

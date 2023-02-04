@@ -13,8 +13,8 @@ import pickle
 import imageio
 
 INKSCAPE_DIR = r'C:\Program Files\Inkscape\bin'
-GOTHAM_FONTPATH = r'C:\Users\kroma\Downloads\Gotham-Font\GothamMedium.ttf'
-
+#GOTHAM_FONTPATH = r'C:\Users\kroma\Downloads\Gotham-Font\GothamMedium.ttf'
+GOTHAM_FONTPATH = r'C:\Users\water\Downloads\Gotham-Font\Gotham-Font\GothamBook.ttf'
 from matplotlib import font_manager
 font_manager.findSystemFonts(fontpaths=None, fontext="ttf")
 from matplotlib import rcParams
@@ -33,9 +33,8 @@ In the URL field, change path. Note, expects: file:///{PATH}
 Note: Inkscape kept dying, found creating absolute path, then prepending file:\\\ worked
 rather than starting by typing "file:///" @kroman
 '''
-WRAPPER_DIR = r'C:\Users\kroma\Documents\Differential\Wrappers'
-#LEGEND_DSTDIR = r'C:\Users\kroma\Documents\Differential\Boxes\backPRINT'
-#LEGEND_SRCDIR = r'C:\Users\kroma\Documents\Differential\Boxes'
+WRAPPER_DIR = r'default_template\bars'
+
 
 
 def export(srcfile, dstfile):
