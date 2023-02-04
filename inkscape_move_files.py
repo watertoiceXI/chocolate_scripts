@@ -22,8 +22,6 @@ font_manager.fontManager.addfont(GOTHAM_FONTPATH)
 rcParams['font.family']='Gotham'
 import matplotlib.pyplot as plt
 
-import sys
-sys.path.append(r'C:\Users\kroma\Documents\Differential')
 import plot_choco as pc
 
 '''

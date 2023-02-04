@@ -11,7 +11,6 @@ import imageio
 
 import inkscape_move_files as imf
 
-INKSCAPE_DIR = r'C:\Program Files\Inkscape\bin'
 LEGEND_DSTDIR = r'C:\Users\kroma\Documents\Differential\Boxes\testPrint'
 LEGEND_SRCDIR = r'default_templates\truffles'
 
