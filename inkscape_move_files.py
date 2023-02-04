@@ -45,54 +45,6 @@ def export(srcfile, dstfile):
     print(out)
     os.chdir(cwd)
     
-def legend_box(flavors, num):
-    assert(num in [1,2])
-    if len(flavors) == 3: # bars
-        shutil.copy(os.path.join(LEGEND_SRCDIR, f'Back_BarTruffle_Base_{num}.svg'),
-                    os.path.join(LEGEND_DSTDIR, f'back_{num}.svg'))
-        shutil.copy(os.path.join(LEGEND_SRCDIR, 'unit_bars.svg'),
-                    os.path.join(LEGEND_DSTDIR, f'base_{num}.svg'))
-        for nflavor, flavor in enumerate(flavors):
-            shutil.copy(os.path.join(LEGEND_SRCDIR, f'ingredient_{flavor}.svg'),
-                        os.path.join(LEGEND_DSTDIR, f'ingredient_{num}_{nflavor}.svg'))
-            shutil.copy(os.path.join(LEGEND_SRCDIR, f'truffle_{flavor}.svg'),
-                        os.path.join(LEGEND_DSTDIR, f'truffle_{num}_{nflavor}.svg'))  
-    elif len(flavors) == 4: #all truffles
-        shutil.copy(os.path.join(LEGEND_SRCDIR, f'Back_onlyTruffles_{num}.svg'),
-                    os.path.join(LEGEND_DSTDIR, f'back_{num}.svg'))
-        shutil.copy(os.path.join(LEGEND_SRCDIR, 'unit_onlyTruffles.svg'),
-                    os.path.join(LEGEND_DSTDIR, f'base_{num}.svg'))
-        for nflavor, flavor in enumerate(flavors):
-            shutil.copy(os.path.join(LEGEND_SRCDIR, f'ingredient_{flavor}.svg'),
-                        os.path.join(LEGEND_DSTDIR, f'ingredient_{num}_{nflavor}.svg'))
-            shutil.copy(os.path.join(LEGEND_SRCDIR, f'truffle_{flavor}.svg'),
-                        os.path.join(LEGEND_DSTDIR, f'truffle_{num}_{nflavor}.svg'))       
-    else:
-        raise NotImplementedError('how many truffles do you want?!')
-    return
-
-def bulk_legend():    
-    combos = [['orange_caramel','hazelnut_crunch','chai_tea','red_wine'],
-                ['cherry', 'hazelnut_crunch', 'hazelnut_praline','espresso'],
-                ['red_wine', 'orange_caramel','hazelnut_crunch','chai_tea'],
-                ['hazelnut_crunch','hazelnut_praline','red_wine', 'espresso'],
-                ['red_wine', 'hazelnut_crunch', 'espresso', 'orange_caramel'],
-                ['orange_caramel', 'chai_tea', 'cherry', 'red_wine'],
-                ['espresso', 'hazelnut_praline', 'orange_caramel', 'red_wine'],
-                ['red_wine', 'hazelnut_crunch','orange_caramel','chai_tea'],
-                ['hazelnut_crunch','orange_caramel','cherry','chai_tea'],
-                ['orange_caramel', 'hazelnut_crunch','red_wine','chai_tea'],
-                ['orange_caramel','red_wine', 'chai_tea', 'cherry'],
-                ['orange_caramel', 'hazelnut_crunch', 'red_wine', 'espresso']]
-
-    for count, ncomb in enumerate(range(0, len(combos), 2)):
-        legend_box(combos[ncomb],1)
-        legend_box(combos[ncomb+1],2)
-        export(os.path.join(LEGEND_DSTDIR, 'Back_Print.svg'),
-                os.path.join(LEGEND_DSTDIR, f'back_print_{count}.pdf'))
-        print(f'Saved back_print_{count}.pdf')
-    print('Done.')
-    
 def wrapper_bar():
     wrappers = [['blueberry', 'nibs', 'bolivian', 'vietnamese'],
                 ['cherry', 'cherry', 'cherry', 'cherry']]
