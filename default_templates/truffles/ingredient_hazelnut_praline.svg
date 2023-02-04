@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="0.60000002in"
+   height="0.86000001in"
+   viewBox="0 0 15.240001 21.844"
+   version="1.1"
+   id="svg19745"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="ingredient_hazelnut_praline.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview19747"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="in"
+     showgrid="false"
+     inkscape:zoom="4.76"
+     inkscape:cx="45.378151"
+     inkscape:cy="58.823529"
+     inkscape:window-width="1920"
+     inkscape:window-height="1046"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs19742" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       transform="scale(0.99728122,1.0027262)"
+       style="font-variant:normal;font-weight:500;font-stretch:normal;font-size:2.05116px;font-family:'Gotham Medium';-inkscape-font-specification:Gotham-Medium;text-align:start;letter-spacing:0.358953px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.34186"
+       id="text338-9"
+       x="-0.072962373"
+       y="1.6179522"><tspan
+         x="-0.072962373"
+         y="1.6179522"
+         sodipodi:role="line"
+         id="tspan1387"
+         style="text-align:start;text-anchor:start;stroke-width:0.34186">HAZELNUT</tspan><tspan
+         x="-0.072962373"
+         y="4.1819024"
+         sodipodi:role="line"
+         style="text-align:start;text-anchor:start;stroke-width:0.34186"
+         id="tspan22867">PRALINE</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.34093068,0,0,0.3427921,0.83404762,6.226541)"
+       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.5px;line-height:0.95;font-family:'Gotham Book';-inkscape-font-specification:Gotham-BookItalic;text-align:start;writing-mode:lr-tb;text-anchor:start;white-space:pre;inline-size:42.4887;display:inline;fill:#231f20;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text350-5"
+       x="-2.0475099"
+       y="0"><tspan
+         x="-2.0475099"
+         y="0"
+         id="tspan2074">White chocolate, </tspan><tspan
+         x="-2.0475099"
+         y="4.4230246"
+         id="tspan2076">sugar, hazelnuts</tspan></text>
+  </g>
+</svg>
