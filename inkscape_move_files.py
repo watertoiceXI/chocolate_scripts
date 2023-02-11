@@ -51,10 +51,10 @@ def export(srcfile, dstfile):
     print(out)
     os.chdir(cwd)
     
-def wrapper_bar():
-    wrappers = [['blueberry', 'nibs', 'bolivian', 'vietnamese'],
-                ['cherry', 'cherry', 'cherry', 'cherry']]
-    wrapper_folders = sorted(glob.glob(os.path.join(WRAPPER_DIR, '*')))
+def wrapper_bar(wrappers):
+    #wrappers = [['blueberry', 'nibs', 'bolivian', 'vietnamese'],
+    #            ['cherry', 'cherry', 'cherry', 'cherry']]
+    wrapper_folders = sorted(glob.glob(os.path.join(WRAPPER_DSTDIR, '*')))
     wrapper_folders = [x for x in wrapper_folders if os.path.isdir(x)]
     for count, wrapper_set in enumerate(wrappers):
         assert(len(wrapper_set) == 4)
@@ -65,10 +65,10 @@ def wrapper_bar():
             match = matches[0]
             wfile = sorted(glob.glob(os.path.join(match, '*.svg')))
             wfile = [x for x in wfile if 'insert' not in x][0]
-            shutil.copy(wfile, os.path.join(WRAPPER_DIR, f'Wrapper_{nw}.svg'))
-        export(os.path.join(WRAPPER_DIR, 'Wrapper_Print4.svg'),
-               os.path.join(WRAPPER_DIR, f'Wrapper_print4_{count}.pdf'))
-        print(f'Saved wrapper_print4_{count}.pdf')
+            shutil.copy(wfile, os.path.join(WRAPPER_DSTDIR, f'Wrapper_{nw}.svg'))
+        export(os.path.join(WRAPPER_DSTDIR, 'Wrapper_Print4.svg'),
+               os.path.join(WRAPPER_DSTDIR, f'Wrapper_print_{count}.pdf'))
+        print(f'Saved wrapper_print_{count}.pdf')
     print('Done.')
                     
 
@@ -127,6 +127,7 @@ def create_wrapper(name, darkper, tasting_notes, lat, lon, city, country, flavor
     now = datetime.datetime.now()
     map_file = r'file:///' + map_file #.replace(r"\", r'%5C', 20) 
     stellar_file = "file:///" + stellar_file #.replace(r"\", r'%5C', 20)
+    spec_file = "file:///" + spec_file
 
     NAME1, NAME2 = name.split('_')
     WRAPPER_DEFAULTS = {'NAME 1': NAME1,
@@ -150,6 +151,13 @@ def create_wrapper(name, darkper, tasting_notes, lat, lon, city, country, flavor
     replace_defaults(os.path.join(wrapper_folder, 'wrapper.svg'),
                      os.path.join(wrapper_folder, 'wrapper.svg'),
                      replacedict = WRAPPER_DEFAULTS)
+                     
+    shutil.copy(os.path.join(WRAPPER_SRCDIR, 'insert_back.svg'),
+                os.path.join(wrapper_folder, 'insert_back.svg'))
+    replace_defaults(os.path.join(wrapper_folder, 'insert_back.svg'),
+                     os.path.join(wrapper_folder, 'insert_back.svg'),
+                     replacedict = {'stellar.png', stellar_file,
+                                    'spec.png', spec_file})
     print(f'Built wrapper {name}')
     return
     
