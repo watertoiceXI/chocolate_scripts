@@ -36,7 +36,9 @@ In the URL field, change path. Note, expects: file:///{PATH}
 Note: Inkscape kept dying, found creating absolute path, then prepending file:\\\ worked
 rather than starting by typing "file:///" @kroman
 '''
-WRAPPER_DIR = r'default_template\bars'
+
+WRAPPER_SRCDIR = r'default_templates\bars'
+WRAPPER_DSTDIR = os.path.split(current)[0]
 
 
 
@@ -79,7 +81,7 @@ def replace_defaults(default_file, export_file, replacedict):
     #print('Done.')
     
 def create_wrapper(name, darkper, tasting_notes, lat, lon, city, country, flavor_data, specf):
-    wrapper_folder = os.path.join(WRAPPER_DIR, name)
+    wrapper_folder = os.path.join(WRAPPER_DSTDIR, name)
     if os.path.exists(wrapper_folder):
         pass #raise NameError(f'{wrapper_folder} already exists! :-o')
     else:
@@ -113,7 +115,7 @@ def create_wrapper(name, darkper, tasting_notes, lat, lon, city, country, flavor
 
     #map
     map_file = os.path.join(wrapper_folder, f'{name}_map.png')
-    pc.mapthingy(lat, lon)
+    pc.mapthingy(lon, lat)
     plt.savefig(map_file,dpi=600)
     tmp = imageio.imread(map_file)
     tmp[:,:,3] = 255-tmp[:,:,0] #modify alpha channel
@@ -141,7 +143,7 @@ def create_wrapper(name, darkper, tasting_notes, lat, lon, city, country, flavor
     with open(os.path.join(wrapper_folder, f"{name}_dat.pkl"),"wb") as f:
         pickle.dump(dat,f)
         
-    shutil.copy(os.path.join(WRAPPER_DIR, 'Dark_Wrapper_Template.svg'),
+    shutil.copy(os.path.join(WRAPPER_SRCDIR, 'Dark_Wrapper_Template.svg'),
                 os.path.join(wrapper_folder, 'wrapper.svg'))
     replace_defaults(os.path.join(wrapper_folder, 'wrapper.svg'),
                      os.path.join(wrapper_folder, 'wrapper.svg'),
@@ -150,21 +152,22 @@ def create_wrapper(name, darkper, tasting_notes, lat, lon, city, country, flavor
     return
     
 if __name__ == '__main__': 
-    name = 'Test_Testing' #expects two part name, separated by _
-    darkper = '70' #str
-    tasting_notes = 'LEMON, PEPPER, WHISKY'  # single string
+    name = 'Chaparral_Forest' #expects two part name, separated by _
+    darkper = '65' #str
+    tasting_notes = 'BLUEBERRY, FUDGE, EARTH'  # single string
     
+    # 0-10
     flavor_data = [
-        ("Floral", 5),
-        ("Fruit", 5),
-        ("Nut", 5),
-        ("Earth", 5),
-        ("Chocolate", 5),
-        ("Bitter", 5)]
+        ("Floral", 2),
+        ("Fruit", 7),
+        ("Nut", 4),
+        ("Earth", 6),
+        ("Chocolate", 8),
+        ("Bitter", 2)]
         
     specf = None
     
-    lat, lon = 36.26396367249506, -8.18716217910073
-    city, country = 'Scottsdale', 'USA'
+    lat, lon = 3.725365326642447, -75.48982214591314 
+    city, country = 'Chaparral', 'Colombia'
     
     create_wrapper(name, darkper, tasting_notes, lat, lon, city, country, flavor_data, specf)
