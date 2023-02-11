@@ -38,7 +38,9 @@ rather than starting by typing "file:///" @kroman
 '''
 
 WRAPPER_SRCDIR = r'default_templates\bars'
-WRAPPER_DSTDIR = os.path.split(current)[0]
+WRAPPER_DSTDIR = os.path.join(os.path.split(current)[0], 'Wrappers')
+if not os.path.exists(WRAPPER_DSTDIR):
+    os.mkdir(WRAPPER_DSTDIR)
 
 
 
