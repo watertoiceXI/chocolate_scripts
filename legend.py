@@ -13,6 +13,8 @@ import sys
 
 import inkscape_move_files as imf
 
+current = os.getcwd()
+LEGEND_DSTDIR = os.path.join(os.path.split(current)[0], r'something_actually_relevant') #output folder
 LEGEND_SRCDIR = r'default_templates\truffles'
 
 if not os.path.exists(LEGEND_DSTDIR):
@@ -91,10 +93,6 @@ class Size(Enum):
 
     
 if __name__ == '__main__':
-    LEGEND_DSTDIR = r'C:\Users\kroma\Documents\Differential\Boxes\newerPrint_skinny_blank2'
-    #size = Size.Standard.value 
-    size = Size.Skinny.value
-    
     # combos are a list of flavors
     # Each entry in combos in a list, either 3 or 4 or 5 long
     # If 3, assumes minibars
@@ -119,4 +117,7 @@ if __name__ == '__main__':
                # ['orange_caramel', 'cherry', 'espresso', 'strawberry', "smore"],
                # ['orange_caramel', 'cherry', 'espresso', 'strawberry', "smore"],
                # ['orange_caramel', 'cherry', 'espresso', 'strawberry', "smore"]]
+
+    #size = Size.Standard.value 
+    size = Size.Skinny.value
     bulk_legend(combos, size=size)
