@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="0.73000002in"
+   height="0.73000002in"
+   viewBox="0 0 18.542001 18.542"
+   version="1.1"
+   id="svg15765"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="truffle_smore.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview15767"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="in"
+     showgrid="false"
+     inkscape:zoom="3.76"
+     inkscape:cx="-25.265957"
+     inkscape:cy="0.53191489"
+     inkscape:window-width="1920"
+     inkscape:window-height="1046"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs15762" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g230-1"
+       transform="matrix(0.33659262,0,0,-0.33660956,17.486428,18.372921)">
+      <path
+         d="m 0,0 h -48.817 c -1.453,0 -2.632,1.178 -2.632,2.632 v 48.817 c 0,1.453 1.179,2.631 2.632,2.631 H 0 c 1.454,0 2.632,-1.178 2.632,-2.631 V 2.632 C 2.632,1.178 1.454,0 0,0 Z"
+         style="fill:none;stroke:#231f20;stroke-width:0.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+         id="path232-9" />
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.3362499,0,0,0.33809519,4.3607733,9.8978386)"
+       style="font-variant:normal;font-weight:500;font-stretch:normal;font-size:6px;font-family:'Gotham Medium';-inkscape-font-specification:Gotham-Medium;text-align:center;letter-spacing:1.05px;writing-mode:lr-tb;text-anchor:middle;white-space:pre;inline-size:41.6691;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text270-8-4"
+       x="14.211914"
+       y="0"><tspan
+         x="14.211914"
+         y="0"
+         id="tspan35402">S'MORE</tspan></text>
+  </g>
+</svg>
