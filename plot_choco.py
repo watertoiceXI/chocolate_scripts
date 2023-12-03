@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 import matplotlib.colors
 
 import cartopy
-
 import cartopy.crs as ccrs
 
 
@@ -131,16 +130,21 @@ def draw_stellar(
     ax.plot(0, 0, marker="o", color="white", markersize=3)
 
     
-def pokey_star(data):
+def pokey_star(data, save=None):
     fig = plt.figure(dpi=300)
     ax = fig.add_subplot(111, polar=True)  # Don't forget the projection!
 
-
+    
     draw_stellar(ax, *prepare_data(data))
+    if save is not None:
+        plt.savefig(save, dpi=600)
+    else:
+        plt.draw()
+    plt.close('all')
+                   
 
 
-
-def mapthingy(lat,lon,mark_colo='k'):
+def mapthingy(lat,lon,mark_colo='k', save=None):
 
     fig = plt.figure(figsize=(11,11))
 
@@ -153,7 +157,12 @@ def mapthingy(lat,lon,mark_colo='k'):
 
     ax.add_feature(cartopy.feature.OCEAN, color='white')
 
-    ax.plot(lat, lon, mark_colo, marker=7, markersize=29, transform=ccrs.PlateCarree())
+    ax.plot(lon, lat, mark_colo, marker=7, markersize=29, transform=ccrs.PlateCarree())
+    if save is not None:
+        plt.savefig(save, dpi=600)
+    else:
+        plt.show()
+    plt.close('all')
 
     
 def wavelength_to_rgb(wavelength, gamma=0.8):
@@ -208,17 +217,23 @@ def wavelength_to_rgb(wavelength, gamma=0.8):
         B = 0.0
     return (R, G, B, A)
 
-def plot_spec(spectrum,wavelengths,linecolor='white',fig=None):
+def plot_spec(specf,linecolor='white',save=None):
+    wavelengths = np.linspace(400, 750, 1000)
+    specdata = np.load(specf, allow_pickle=True)
+    minlamb = 300
+    maxlamb = -100
+    spectrum = 0.05+specdata[1][minlamb:maxlamb][::-1]
+    wavelengths = specdata[0][minlamb:maxlamb][::-1]
+    
     clim = (380, 750)
     norm = plt.Normalize(*clim)
     wl = np.arange(clim[0], clim[1] + 1, 2)
     colorlist = list(zip(norm(wl), [wavelength_to_rgb(w) for w in wl]))
     spectralmap = matplotlib.colors.LinearSegmentedColormap.from_list("spectrum", colorlist)
 
-    if fig is None:
-        fig, axs = plt.subplots(1, 1, figsize=(8, 4), tight_layout=True)
+    fig, axs = plt.subplots(1, 1, figsize=(8*2, 4*2), tight_layout=True)
 
-    plt.plot(wavelengths, spectrum, color=linecolor, linewidth=1)
+    axs.plot(wavelengths, spectrum, color=linecolor, linewidth=1)
 
     y = spectrum
     X, Y = np.meshgrid(wavelengths, y)
@@ -226,9 +241,52 @@ def plot_spec(spectrum,wavelengths,linecolor='white',fig=None):
     #extent = (400, 800, np.min(y), np.max(y)) 
     extent = (np.min(wavelengths), np.max(wavelengths), np.min(y), np.max(y))
 
-    plt.imshow(X, clim=clim, extent=extent, cmap=spectralmap, aspect='auto')
+    axs.imshow(X, clim=clim, extent=extent, cmap=spectralmap, aspect='auto')
     #plt.xlabel('Wavelength (nm)',fontsize=44)
-    plt.yticks([])
-    plt.xticks([])
+    axs.set_yticks([])
+    axs.set_xticks([])
 
-    plt.fill_between(wavelengths, spectrum, max(spectrum), color='w')
+    axs.fill_between(wavelengths, spectrum, max(spectrum), color='w')
+    axs.plot(specdata[0][minlamb:maxlamb][::-1],np.zeros_like(specdata[1][minlamb:maxlamb]),'k--',lw=10,label='Commercial Chocolate')
+    axs.legend(fontsize=44,loc=3)
+    if save is not None:
+        plt.savefig(save,dpi=600)
+    else:
+        plt.show()
+    plt.close('all')
+    return
+    
+if __name__ == '__main__':
+    from argparse import ArgumentParser
+    from pathlib import Path
+    
+    parser = ArgumentParser()
+    parser.add_argument('-n', '--name', help='name for plots')
+    parser.add_argument('-o', '--odir', help='path to output directory')
+    parser.add_argument('-m', '--map', action='store_true', help='plot map') 
+    parser.add_argument('-s', '--spec', action='store_true', help='plot spectrogram') 
+    parser.add_argument('-p', '--pokey', action='store_true', help='plot pokey star') 
+
+    args = parser.parse_args()
+    name = args.name if args.name else ''
+    if args.odir:
+        outpath = Path(args.odir)
+    else:
+        outpath = Path(__file__).parent.parent
+    
+    if args.map:
+        lat, lon = input('\nLatitude and Longitude, comma separated: ').split(',')
+        lat, lon = float(lat), float(lon)
+        mapthingy(lat, lon, save=Path.joinpath(outpath, f'{name}_map.png'))
+        
+    if args.spec:
+        specf = input('\nFilepath to spec data: ')
+        plot_spec(specf, save=Path.joinpath(outpath, f'{name}_spec.png'))
+        
+    if args.pokey:
+        flavors = ["Floral", "Fruit", "Nut", "Earth", "Chocolate", "Bitter"]
+        ranks = input(f'\nRanks for {flavors}, 0-10 comma separated:\n').split(',')
+        flavor_data = [(flavors[n], int(r)) for n,r in enumerate(ranks)]
+        pokey_star(flavor_data, save=Path.joinpath(outpath, f'{name}_star.png'))
+
+                  
