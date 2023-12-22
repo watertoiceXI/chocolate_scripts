@@ -4,13 +4,19 @@ import os
 def load_config(cfgf):
     with open(cfgf, 'r') as fin:
         cfg = yaml.safe_load(fin)
+    if 'flavor_data' in cfg:
+        flavors = ["Floral", "Fruit", "Nut", "Earth", "Chocolate", "Bitter"]
+        tmp = {flavor: cfg['flavor_data'][flavor] for flavor in flavors}
+        cfg['flavor_data'] = tmp
     return cfg
 
 def make_config(exportdir):
-    name = input(r'Bar name (for front of wrapper): ')
-    if len(name) == 0:
+    name1 = input(r'Name 1 (first line on wrapper): ')
+    name2 = input(r'Name 2 (second line on wrapper): ')
+    if len(name1) == 0:
         raise ValueError('Need a name.')
-    name = name.replace(' ', '_')
+    #name1 = name1.replace(' ', '_')
+    #name2 = name2.replace(' ', '_')
     print('At any time to skip a question, press Enter.')
     darkper = input(r'% dark: ')
     
@@ -33,7 +39,8 @@ def make_config(exportdir):
             print(f"{flavor_data}")
         flavor_data[flavor] = int( input(f'{flavor}: '))
 
-    settings = {'name': name,
+    settings = {'name1': name1,
+                'name2': name2,
                 'city': city,
                 'country': country,
                 'lat': lat,
@@ -47,13 +54,12 @@ def make_config(exportdir):
                 'specim': specim
                 }
     
-    exportdir = os.path.join(exportdir, name)
     if not os.path.exists(exportdir):
         os.makedirs(exportdir)
     print(f'Saving config file to {exportdir}')
-    write_config(settings, os.path.join(exportdir, name+'_config.yaml'))
+    write_config(settings, os.path.join(exportdir, 'config.yaml'))
     print(settings)
-    return
+    return settings
 
 def write_config(config, outf):
     with open(outf, 'w') as fout:
