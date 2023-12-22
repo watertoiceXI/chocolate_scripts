@@ -107,7 +107,8 @@ def create_wrapper(config, odir): #name, darkper, tasting_notes, lat, lon, city,
     
     #spec
     if not len(config['specim']):
-        pc.plot_spec(config['specf'], save=os.path.join(odir, f'spec.png'))
+        if len(config['specf']):
+            pc.plot_spec(config['specf'], save=os.path.join(odir, f'spec.png'))
         config['specim'] = os.path.join(odir, f'spec.png')
     
     #star
