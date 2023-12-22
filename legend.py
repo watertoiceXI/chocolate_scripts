@@ -110,13 +110,23 @@ if __name__ == '__main__':
             #['orange_caramel','red_wine', 'chai_tea', 'cherry'],
             #['orange_caramel', 'hazelnut_crunch', 'red_wine', 'espresso']]
     """
-    combos = [ ['orange_caramel', 'cherry', 'espresso', 'strawberry', "smore"]] #,
-               # ['orange_caramel', 'cherry', 'espresso', 'strawberry', "smore"],
-               # ['orange_caramel', 'cherry', 'espresso', 'strawberry', "smore"],
-               # ['orange_caramel', 'cherry', 'espresso', 'strawberry', "smore"],
-               # ['orange_caramel', 'cherry', 'espresso', 'strawberry', "smore"],
-               # ['orange_caramel', 'cherry', 'espresso', 'strawberry', "smore"],
-               # ['orange_caramel', 'cherry', 'espresso', 'strawberry', "smore"]]
+    combos = [['smore', 'raspberry', 'strawberry', 'scotch_honey', "red_wine"], #brian
+              ['maple_bourbon', 'smore', 'oreo', 'blueberry','strawberry'], #brian
+              ['strawberry', 'raspberry', 'smore', 'scotch_honey', 'oreo'],
+              ['strawberry', 'raspberry', 'smore', 'scotch_honey', 'oreo'],
+              ['strawberry', 'raspberry', 'smore', 'scotch_honey', 'oreo'],
+              ['strawberry', 'raspberry', 'smore', 'scotch_honey', 'oreo'],
+              ['strawberry', 'raspberry', 'smore', 'scotch_honey', 'oreo']]
+              
+              
+              #['maple_bourbon', 'raspberry', 'oreo', 'blueberry', "smore"], #shaun
+              #['blueberry', 'strawberry', 'smore', 'oreo', 'raspberry'], # adam
+              # ['raspberry', 'smore', 'red_wine', 'scotch_honey', "maple_bourbon"], #mike
+              # ['raspberry', 'raspberry', 'raspberry', 'raspberry', "raspberry"], #bryan
+               #['blueberry', 'blueberry', 'blueberry', 'blueberry', "blueberry"], #bryan
+               #['smore', 'raspberry', 'strawberry', 'scotch_honey', "maple_bourbon"], #, #jay
+               #['strawberry', 'blueberry', 'smore', 'oreo', 'maple_bourbon']] #jim
+
 
     #size = Size.Standard.value 
     size = Size.Skinny.value

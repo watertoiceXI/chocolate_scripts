@@ -5,7 +5,7 @@ from math import ceil, pi
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors
-
+import imageio
 import cartopy
 import cartopy.crs as ccrs
 
@@ -44,7 +44,7 @@ def prepare_angles(N):
 def prepare_data(data):
     labels = [d[0] for d in data]  # Variable names
 
-    values = [d[1] for d in data]
+    values = [int(d[1]) for d in data]
 
     # Repeat the first value to close the circle
 
@@ -138,6 +138,9 @@ def pokey_star(data, save=None):
     draw_stellar(ax, *prepare_data(data))
     if save is not None:
         plt.savefig(save, dpi=600)
+        tmp = imageio.imread(save)
+        tmp[:,:,3] = 255-tmp[:,:,0] #modify alpha channel
+        imageio.imwrite(save, tmp)
     else:
         plt.draw()
     plt.close('all')
@@ -160,6 +163,9 @@ def mapthingy(lat,lon,mark_colo='k', save=None):
     ax.plot(lon, lat, mark_colo, marker=7, markersize=29, transform=ccrs.PlateCarree())
     if save is not None:
         plt.savefig(save, dpi=600)
+        tmp = imageio.imread(save)
+        tmp[:,:,3] = 255-tmp[:,:,0] #modify alpha channel
+        imageio.imwrite(save, tmp)
     else:
         plt.show()
     plt.close('all')
@@ -220,6 +226,8 @@ def wavelength_to_rgb(wavelength, gamma=0.8):
 def plot_spec(specf,linecolor='white',save=None):
     wavelengths = np.linspace(400, 750, 1000)
     specdata = np.load(specf, allow_pickle=True)
+    if 'spec' in specdata:
+        specdata = specdata['spec']
     minlamb = 300
     maxlamb = -100
     spectrum = 0.05+specdata[1][minlamb:maxlamb][::-1]

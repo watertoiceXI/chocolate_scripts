@@ -16,6 +16,27 @@ WRAPPER_DSTDIR = os.path.join(os.path.split(current)[0], 'Wrappers')
 wrapper_folders = sorted(glob.glob(os.path.join(WRAPPER_DSTDIR, '*')))
 wrapper_folders = [x for x in wrapper_folders if os.path.isdir(x)]
 
+def insert_print(insert_dict, outdir):
+    count = 0
+    for insert_name, num_inserts in insert_dict.items():
+        if not os.path.exists(insert_name):
+            raise ValueError('Need full path to insert.')
+        neven, nodd = num_inserts // 3, num_inserts % 3
+        if neven:
+            replaceDict = {}
+            for _ in range(3):
+                replaceDict["InsertFront_default.svg"] = "file:///" + insert_name
+        if nodd:
+            raise NotImplementedError('Sorry, too tired. Chantilly day.')
+        imf.replace_defaults(os.path.join(WRAPPER_SRCDIR, 'Insert4x6_TEMPLATE.svg'),
+                            os.path.join(outdir, f'Insert_print_{count}.svg'),
+                            replacedict = replaceDict, nreplace=3)
+        imf.export(os.path.join(outdir, f'Insert_print_{count}.svg'),
+                   os.path.join(outdir, f'Insert_print_{count}.pdf'))
+        count += 1
+    return
+
+
 def wrapper_bar_print(wrapper_dict, outdir):
     hold = []
     count = 0
@@ -79,7 +100,6 @@ def wrapper_bar_print(wrapper_dict, outdir):
 
 
 def create_wrapper(config, odir): #name, darkper, tasting_notes, lat, lon, city, country, flavor_data, specf):
-    name = config['name']
     if os.path.exists(odir):
         pass #raise NameError(f'{wrapper_folder} already exists! :-o')
     else:
@@ -87,18 +107,18 @@ def create_wrapper(config, odir): #name, darkper, tasting_notes, lat, lon, city,
     
     #spec
     if not len(config['specim']):
-        pc.plot_spec(config['specf'], save=os.path.join(odir, f'{name}_spec.png'))
-        config['specim'] = os.path.join(odir, f'{name}_spec.png')
+        pc.plot_spec(config['specf'], save=os.path.join(odir, f'spec.png'))
+        config['specim'] = os.path.join(odir, f'spec.png')
     
     #star
     if not len(config['starf']):
-        pc.pokey_star(config['flavor_data'].items(), save=os.path.join(odir, f'{name}_star.png'))
-        config['starf'] = os.path.join(odir, f'{name}_star.png')
+        pc.pokey_star(config['flavor_data'].items(), save=os.path.join(odir, f'star.png'))
+        config['starf'] = os.path.join(odir, f'star.png')
 
     #map
     if not len(config['mapf']):
-        pc.mapthingy(config['lat'], config['lon'], save=os.path.join(odir, f'{name}_map.png'))
-        config['mapf'] = os.path.join(os.path.join(odir, f'{name}_map.png'))
+        pc.mapthingy(config['lat'], config['lon'], save=os.path.join(odir, f'map.png'))
+        config['mapf'] = os.path.join(os.path.join(odir, f'map.png'))
     
     # do wrapper stuff
     now = datetime.datetime.now()
@@ -106,7 +126,7 @@ def create_wrapper(config, odir): #name, darkper, tasting_notes, lat, lon, city,
     stellar_file = "file:///" + config['starf'] #.replace(r"\", r'%5C', 20)
     spec_file = "file:///" + config['specim']
 
-    NAME1, NAME2 = name.split('_')
+    NAME1, NAME2 = config['name1'], config['name2']
     WRAPPER_DEFAULTS = {'NAME 1': NAME1,
                         'NAME 2': NAME2,
                         'ORIGIN: CITY': f'ORIGIN: {config["city"]}',
@@ -119,7 +139,7 @@ def create_wrapper(config, odir): #name, darkper, tasting_notes, lat, lon, city,
                         
     #save data
     config.update(WRAPPER_DEFAULTS)
-    write_config(config, os.path.join(odir, f'{name}_config.yaml'))
+    write_config(config, os.path.join(odir, f'config.yaml'))
 
     # do inkscape stuff    
     shutil.copy(os.path.join(WRAPPER_SRCDIR, 'Dark_Wrapper_Template.svg'),
@@ -136,7 +156,7 @@ def create_wrapper(config, odir): #name, darkper, tasting_notes, lat, lon, city,
                                     'spec.png': spec_file,
                                      'CITY, COUNTRY': config["city"] + ', '+config["country"],
                                      'YY': str(now.year)[-2:]})
-    print(f'Built wrapper {name}')
+    print(f'Built wrapper {odir}')
     return
 
 if __name__ == '__main__': 
