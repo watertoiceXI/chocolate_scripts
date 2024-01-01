@@ -28,7 +28,7 @@ def insert_print(insert_dict, outdir):
                 replaceDict["InsertFront_default.svg"] = "file:///" + insert_name
         if nodd:
             raise NotImplementedError('Sorry, too tired. Chantilly day.')
-        imf.replace_defaults(os.path.join(WRAPPER_SRCDIR, 'Insert4x6_TEMPLATE.svg'),
+        imf.replace_defaults(os.path.join(WRAPPER_SRCDIR, 'InsertBack_print_printingmarks.svg'),
                             os.path.join(outdir, f'Insert_print_{count}.svg'),
                             replacedict = replaceDict, nreplace=3)
         imf.export(os.path.join(outdir, f'Insert_print_{count}.svg'),
@@ -90,16 +90,16 @@ def wrapper_bar_print(wrapper_dict, outdir):
             #shutil.copy(wfile, os.path.join(WRAPPER_DSTDIR, f'Wrapper_{nw}.svg')
         for bn in range(nw, 4):
             replaceDict[hrefs[bn]] = "file:///" + os.path.join(WRAPPER_SRCDIR, 'Blank_Wrapper.svg')
-        imf.replace_defaults(os.path.join(WRAPPER_SRCDIR, 'Wrapper_Print4.svg'),
-                            os.path.join(outdir, f'Wrapper_print_{count}.svg'),
-                            replacedict = replaceDict)
+            imf.replace_defaults(os.path.join(WRAPPER_SRCDIR, 'Wrapper_Print4.svg'),
+                                os.path.join(outdir, f'Wrapper_print_{count}.svg'),
+                                replacedict = replaceDict)
         imf.export(os.path.join(outdir, f'Wrapper_print_{count}.svg'),
                os.path.join(outdir, f'Wrapper_print_{count}.pdf'))
         count += 1
     print(f'Saved wrapper_prints 0 - {count}')
 
 
-def create_wrapper(config, odir): #name, darkper, tasting_notes, lat, lon, city, country, flavor_data, specf):
+def create_wrapper(config, odir, double=False): #name, darkper, tasting_notes, lat, lon, city, country, flavor_data, specf):
     if os.path.exists(odir):
         pass #raise NameError(f'{wrapper_folder} already exists! :-o')
     else:
@@ -143,7 +143,11 @@ def create_wrapper(config, odir): #name, darkper, tasting_notes, lat, lon, city,
     write_config(config, os.path.join(odir, f'config.yaml'))
 
     # do inkscape stuff    
-    shutil.copy(os.path.join(WRAPPER_SRCDIR, 'Dark_Wrapper_Template.svg'),
+    if double:
+        wrappertemplate = 'DoubleBar_Template.svg'
+    else:
+        wrappertemplate = 'Dark_Wrapper_Template.svg'
+    shutil.copy(os.path.join(WRAPPER_SRCDIR, wrappertemplate),
                 os.path.join(odir, 'wrapper.svg'))
     imf.replace_defaults(os.path.join(odir, 'wrapper.svg'),
                      os.path.join(odir, 'wrapper.svg'),
@@ -156,7 +160,8 @@ def create_wrapper(config, odir): #name, darkper, tasting_notes, lat, lon, city,
                      replacedict = {'stellar.png': stellar_file,
                                     'spec.png': spec_file,
                                      'CITY, COUNTRY': config["city"] + ', '+config["country"],
-                                     'YY': str(now.year)[-2:]})
+                                     'YY': str(now.year)[-2:],
+                                     'DARKPER': config['darkper']})
     print(f'Built wrapper {odir}')
     return
 
@@ -166,6 +171,7 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('-c', '--config', help='path to config file')
     parser.add_argument('-o', '--odir', help='path to output directory')
+    parser.add_argument('-d', '--double', help='double bar', action='store_true')
     args = parser.parse_args()
 
     if not args.odir:
@@ -179,6 +185,6 @@ if __name__ == '__main__':
         config = make_config(odir)
     else:
         config = load_config(args.config)
-    create_wrapper(config, odir)
+    create_wrapper(config, odir, double=args.double)
     
     

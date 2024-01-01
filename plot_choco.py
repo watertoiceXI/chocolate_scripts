@@ -223,14 +223,14 @@ def wavelength_to_rgb(wavelength, gamma=0.8):
         B = 0.0
     return (R, G, B, A)
 
-def plot_spec(specf,linecolor='white',save=None):
+def plot_spec(specf,linecolor='white',save=None,offset=.05):
     wavelengths = np.linspace(400, 750, 1000)
     specdata = np.load(specf, allow_pickle=True)
     if 'spec' in specdata:
         specdata = specdata['spec']
     minlamb = 300
     maxlamb = -100
-    spectrum = 0.05+specdata[1][minlamb:maxlamb][::-1]
+    spectrum = offset+specdata[1][minlamb:maxlamb][::-1]
     wavelengths = specdata[0][minlamb:maxlamb][::-1]
     
     clim = (380, 750)
@@ -256,7 +256,7 @@ def plot_spec(specf,linecolor='white',save=None):
 
     axs.fill_between(wavelengths, spectrum, max(spectrum), color='w')
     axs.plot(specdata[0][minlamb:maxlamb][::-1],np.zeros_like(specdata[1][minlamb:maxlamb]),'k--',lw=10,label='Commercial Chocolate')
-    axs.legend(fontsize=44,loc=3)
+    axs.legend(fontsize=44)#,loc=3)
     if save is not None:
         plt.savefig(save,dpi=600)
     else:
