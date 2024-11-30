@@ -25,13 +25,14 @@ For instructions please consult the readme!
 
 '''
 
-
+import glob
 import cv2
 import time
 import numpy as np
 from specFunctions import wavelength_to_rgb,savitzky_golay,peakIndexes,readcal,writecal,background,generateGraticule
 import base64
 import argparse
+import pandas as pd
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--device", type=int, default=1, help="Video Device number e.g. 1, use v4l2-ctl --list-devices")
@@ -151,28 +152,39 @@ graticuleData = generateGraticule(wavelengthData)
 tens = (graticuleData[0])
 fifties = (graticuleData[1])
 
+isReference = False
+spectralSubtract = None
 
 print(f"\nUI Controls: \
 	\n\tm = measure (Toggles measure function. In this mode a crosshairs is displayed on the Spectrogram that allows the measurement of wavelength) \
     \n\tp = record pixels (Toggles pixel function (Part of the calibration procedure) allows the selection of multiple pixel positions on the graph) \
     \n\tx = clear points (Clear selected pixel points above) \
     \n\tc = calibrate (Enter the calibration routine, requires console input) \
+    \n\tr = reference (Capture reference Spectrograph and save.) \
     \n\ts = save data (Saves Spectrograph as png and CSV data. Saves waterfall as png. \
+    \n\t- = subtract (Subtract reference from current.) \
     \n\tq = quit (Quit Program)\n")
 
-
-def snapshot(savedata):
+def find_reference_data():
+	references = sorted(glob.glob('ref-Spectrum*.csv'))
+	if len(references):
+		return references[-1]
+	else:
+		return None
+	
+def snapshot(savedata, isRef=False):
 	now = time.strftime("%Y%m%d--%H%M%S")
 	timenow = time.strftime("%H:%M:%S")
 	imdata1 = savedata[0]
 	graphdata = savedata[1]
+	filename = "ref-" if isRef else ''
 	if dispWaterfall == True:
 		imdata2 = savedata[2]
-		cv2.imwrite("waterfall-" + now + ".png",imdata2)
-	cv2.imwrite("spectrum-" + now + ".png",imdata1)
+		cv2.imwrite(f"{filename}waterfall-{now}.png",imdata2)
+	cv2.imwrite(f"{filename}spectrum-{now}.png",imdata1)
 	#print(graphdata[0]) #wavelengths
 	#print(graphdata[1]) #intensities
-	f = open("Spectrum-"+now+'.csv','w')
+	f = open(f"{filename}Spectrum-{now}.csv",'w')
 	f.write('Wavelength,Intensity\r\n')
 	for x in zip(graphdata[0],graphdata[1]):
 		f.write(str(x[0])+','+str(x[1])+'\r\n')
@@ -280,8 +292,13 @@ while(cap.isOpened()):
 			holdmsg = "Holdpeaks OFF" 
 		else:
 			holdmsg = "Holdpeaks ON"
-			
 		
+		if spectralSubtract is not None:
+			# subtract reference, assume already filtered
+			#oldmax = np.max(intensity)
+			intensity = np.subtract(intensity, spectralSubtract.Intensity.values)
+			#print(f'New: {intensity.max()} vs. Old: {oldmax}')
+			
 		#now draw the intensity data....
 		index=0
 		for i in intensity:
@@ -406,6 +423,34 @@ while(cap.isOpened()):
 				savedata.append(spectrum_vertical)
 				savedata.append(graphdata)
 			saveMsg = snapshot(savedata)
+		elif keyPress == ord("r"):
+			#take reference spec and save!
+			graphdata = []
+			graphdata.append(wavelengthData)
+			graphdata.append(intensity)
+			if dispWaterfall == True:
+				savedata = []
+				savedata.append(spectrum_vertical)
+				savedata.append(graphdata)
+				savedata.append(waterfall_vertical)
+			else:
+				savedata = []
+				savedata.append(spectrum_vertical)
+				savedata.append(graphdata)
+			saveMsg = snapshot(savedata, isRef=True)
+		elif keyPress == ord("-"):
+			# toggle on/off
+			if spectralSubtract is not None:
+				spectralSubtract = None
+				print(f'Toggle OFF spectral subtraction.')
+			else:
+				#get subtract reference!
+				spectralSubtract = find_reference_data()
+				if spectralSubtract is None:
+					print('Failed to find reference image!')
+				else:
+					print(f'Using reference {spectralSubtract}')
+					spectralSubtract = pd.read_csv(spectralSubtract)
 		elif keyPress == ord("c"):
 			calcomplete = writecal(clickArray)
 			if calcomplete:
