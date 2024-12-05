@@ -130,7 +130,7 @@ def create_wrapper(config, odir, double=False): #name, darkper, tasting_notes, l
     NAME1, NAME2 = config['name1'], config['name2']
     WRAPPER_DEFAULTS = {'NAME 1': NAME1,
                         'NAME 2': NAME2,
-                        'ORIGIN: CITY': f'ORIGIN: {config["city"]}',
+                        'ORIGIN: CITY': f'{config["city"]}',
                         ', COUNTRY': f', {config["country"]}',
                         'MM/YY': str(now.month)+"/"+str(now.year)[-2:],
                         'TN1, TN2, TN3': config["tasting_notes"],
