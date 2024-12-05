@@ -3,6 +3,7 @@ from matplotlib import rcParams
 rcParams['font.family']='Gotham'
 from math import ceil, pi
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.colors
 import imageio
@@ -224,14 +225,22 @@ def wavelength_to_rgb(wavelength, gamma=0.8):
     return (R, G, B, A)
 
 def plot_spec(specf,linecolor='white',save=None,offset=.05):
-    wavelengths = np.linspace(400, 750, 1000)
-    specdata = np.load(specf, allow_pickle=True)
-    if 'spec' in specdata:
-        specdata = specdata['spec']
-    minlamb = 300
-    maxlamb = -100
-    spectrum = offset+specdata[1][minlamb:maxlamb][::-1]
-    wavelengths = specdata[0][minlamb:maxlamb][::-1]
+    if specf.endswith('.npy'):
+        wavelengths = np.linspace(400, 750, 1000)
+        specdata = np.load(specf, allow_pickle=True)
+        if 'spec' in specdata:
+            specdata = specdata['spec']
+        minlamb = 300
+        maxlamb = -100
+        spectrum = offset+specdata[1][minlamb:maxlamb][::-1]
+        wavelengths = specdata[0][minlamb:maxlamb][::-1]
+    else:
+        df = pd.read_csv(specf)
+        specdata = (df.Wavelength.values, df.Intensity.values)
+        minlamb = 0
+        maxlamb = len(specdata[0])
+        spectrum = offset+specdata[1][minlamb:maxlamb]
+        wavelengths = specdata[0][minlamb:maxlamb]
     
     clim = (380, 750)
     norm = plt.Normalize(*clim)
