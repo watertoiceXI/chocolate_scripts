@@ -21,6 +21,7 @@ wrapper_folders = [x for x in wrapper_folders if os.path.isdir(x)]
 def insert_print(insert_dict, outdir):
     count = 0
     for insert_name, num_inserts in insert_dict.items():
+        insert_name = os.path.abspath(insert_name)
         if not os.path.exists(insert_name):
             raise ValueError('Need full path to insert.')
         neven, nodd = num_inserts // 3, num_inserts % 3
@@ -30,7 +31,9 @@ def insert_print(insert_dict, outdir):
                 replaceDict["InsertFront_default.svg"] = "file:///" + insert_name
         if nodd:
             raise NotImplementedError('Sorry, too tired. Chantilly day.')
-        imf.replace_defaults(os.path.join(WRAPPER_SRCDIR, 'InsertBack_print_printingmarks.svg'),
+        directory = os.path.split(insert_name)[0]
+        imf.replace_paths(directory, insert_name)
+        imf.replace_defaults(os.path.join(WRAPPER_SRCDIR, 'InsertBack_print_printingmarks - Copy.svg'),
                             os.path.join(outdir, f'Insert_print_{count}.svg'),
                             replacedict = replaceDict, nreplace=3)
         imf.export(os.path.join(outdir, f'Insert_print_{count}.svg'),
@@ -182,7 +185,7 @@ def main():
     if not args.odir:
         odir = WRAPPER_DSTDIR
     else:
-        odir = args.odir
+        odir = os.path.abspath(args.odir)
     if not os.path.exists(odir):
         os.makedirs(odir)
 
