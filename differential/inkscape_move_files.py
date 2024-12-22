@@ -34,7 +34,7 @@ In addition to changing paths below, ensure
     FOR WRAPPERS: Wrapper_Print4.svg
 To change absolute filepaths, in inkscape select reference and right click > image properties.
 In the URL field, change path. Note, expects: file:///{PATH}
-Note: Inkscape kept dying, found creating absolute path, then prepending file:\\\ worked
+Note: Inkscape kept dying, found creating absolute path, then prepending file:/// worked
 rather than starting by typing "file:///" @kroman
 '''
 
@@ -55,4 +55,23 @@ def replace_defaults(default_file, export_file, replacedict, nreplace=2):
         fout.write(base)
     #print('Done.')
         
-
+def replace_paths(new_absfolder, filename):
+    with open(filename, 'r') as fin:
+        base = fin.read()
+    seek = 0
+    paths = []
+    while seek >= 0:
+        start = base.find('file:///', seek)
+        end = base.find('.png', start)
+        if not ((start >=0) and (end >= 0)):
+            break
+        paths.append( base[start:end]) 
+        seek = end
+    for old_path in paths:
+        if r'%5C' in old_path:
+            basename = os.path.splitext(old_path.split(r'%5C')[-1])[0]
+        else:
+            basename = os.path.splitext(os.path.basename(old_path))[0]
+        base = base.replace(old_path, "file:///"+os.path.join(new_absfolder, basename))
+    with open(filename, 'w') as fout:
+        fout.write(base)          
